@@ -1,0 +1,1 @@
+patterns OOP and more
