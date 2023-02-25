@@ -14,7 +14,7 @@ class upperCaseStrategy implements Strategy {
 class lowerCaseStrategy implements Strategy {
 
     public execute(str: string): string {
-        return str.toUpperCase()
+        return str.toLowerCase()
     }
 }
 
@@ -40,3 +40,20 @@ class Context {
         return this.strategy.execute(str)
     }
 }
+
+
+//define a string we will be using for testing
+const randomString = 'rAnDoM sTrInG'
+console.log('inittial string:', randomString)
+//make a new context with the upper case strategy
+const context = new Context(new upperCaseStrategy())
+//use the current strategy (which is upperCase) to get an upper case String
+const upperCaseString = context.executeStrategy(randomString)
+//check it's upper case
+console.log('upper case:', upperCaseString)
+//change context's strategy
+context.setStrategy(new lowerCaseStrategy())
+//get the lower case string with a different strategy
+const lowerCaseString = context.executeStrategy(upperCaseString)
+//check it's lower case
+console.log('lower case:', lowerCaseString)
