@@ -1,13 +1,19 @@
 //subject or event manager/dispatcher
 interface Observable {
+    //add the observers we want to track out observable
     add(observer: Observer): void
+    //same but delete
     remove(observer: Observer): void
+    //notify all of the observers
     notify(): void
 }
 
 //event listener
 interface Observer {
+
     name: string
+    //the update method will be triggered when the observable uses it
+    //you can pass the observable to get more context or not
     update(observable: Observable): void
 }
 
@@ -21,8 +27,10 @@ class Subject implements Observable {
         this.name = name
     }
 
+    //using a Map but this can just be an array
     private observersMap: Map<Observer['name'], Observer> = new Map<Observer['name'], Observer>
 
+    //add the observer/subscriber to our observable/subject
     public add(observer: Observer): void {
 
         this.observersMap.set(observer.name, observer)
@@ -35,14 +43,19 @@ class Subject implements Observable {
         console.log(`removed observer ${observer.name} to ${this.name}`)
     }
 
+    //we do a forEach on our map so we can press the update method in all of them and pass the current observable/subject
     public notify(): void {
-       this.observersMap.forEach((v,k,m) => v.update(this)) 
+        
+        //note that we allow to pass the instance of our observable to every observer, check the interface
+        this.observersMap.forEach((v,k,m) => v.update(this)) 
     }
 
     public getName(): string {
         return this.name
     }
 
+    //example of a possible method will have the notify method inside, note how we call it at the end to notify our observers
+    //this is a simple change of name but it could be anything
     public changeName(name: string): void {
 
         console.log(`changing name from ${this.name} to ${name}..`)
@@ -51,7 +64,6 @@ class Subject implements Observable {
         console.log(`notifications being sent..`)
         this.notify()
     }
-
 }
 
 class webObserver implements Observer {
@@ -64,7 +76,6 @@ class webObserver implements Observer {
     update(observable: Subject): void {
         console.log(`${this.name} notification from ${observable.getName()}`)
     }
-    
 }
 
 class phoneObserver implements Observer {
@@ -77,7 +88,6 @@ class phoneObserver implements Observer {
     update(observable: Subject): void {
         console.log(`${this.name} notification from ${observable.getName()}`)
     }
-    
 }
 
 //init all our objects
